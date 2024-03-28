@@ -1,9 +1,17 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const {PORT} =  require('./config/server.config');
+
+const connectMongodb = require('./config/dbconnection.config');
+connectMongodb();
 const app = express();
-require('dotenv').config();
 
-const port = process.env.PORT;
+app.use(bodyParser.json());
 
-app.listen(port, ()=> {
-    console.log(`Started server at port ${port}`)
+const apiRouter = require('./routes')
+// app.get('/home', homePingController)
+app.use('/api',apiRouter); //localhost:3000/api/v1/ping
+
+app.listen(PORT, ()=> {
+    console.log(`Started server at port ${PORT}`)
 })
